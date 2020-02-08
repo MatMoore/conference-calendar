@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "csvcalendar"
+version = "0.1.0"
+description = "Sync a CSV file with a Google Calendar"
+authors = ["Mat Moore <matmoore@users.noreply.github.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+google-api-python-client = "^1.7.11"
+google-auth-httplib2 = "^0.0.3"
+google-auth-oauthlib = "^0.4.1"
+
+[tool.poetry.dev-dependencies]
+mypy = "^0.761"
+pytest = "^5.3.5"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
