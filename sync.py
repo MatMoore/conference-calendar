@@ -4,9 +4,15 @@ Load events from Calendar
 Calculate Removals, Additions
 Execute
 """
-from typing import NamedTuple, List, Set, Dict
+from typing import NamedTuple, Set, Dict
 from datetime import date
 from csv import DictReader
+from httplib2 import Http
+import ast
+import os
+import datetime
+from googleapiclient.discovery import build
+from oauth2client.service_account import ServiceAccountCredentials
 
 
 HEADER_NAMES = ['start_date', 'end_date', 'website', 'description']
@@ -84,3 +90,40 @@ def plan_changes(calendar_id: int, existing_events: Dict[Event, int], desired_ev
         to_remove=ids_to_remove,
         to_add=events_to_add
     )
+
+
+class CalendarAPI:
+    SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
+    CALENDAR_ID = os.environ['CALENDAR_ID']
+    def __init__(self):
+        client_secret_dict = ast.literal_eval(os.environ['CLIENT_SECRET_JSON'])
+        credentials = ServiceAccountCredentials.from_json_keyfile_dict(
+            client_secret_dict, scopes=self.SCOPES)
+        http = credentials.authorize(Http())
+        self.calendar = build('calendar', 'v3', http=http)
+
+    def fetch_events(self, calendar_id: int) -> Dict[Event, int]:
+        """
+        Fetch events from the remote calendar.
+        Returns a dictionary where the key is the event details and the value is the event ID
+        """
+        now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+
+        request = self.calendar.events().list(
+            calendarId=self.CALENDAR_ID,
+            timeMin=now,
+            maxResults=10,
+            singleEvents=True,
+            orderBy='startTime'
+        )
+        events_result = request.execute()
+        events = events_result.get('items', [])
+
+        print(events)
+
+        return {}
+
+
+if __name__ == '__main__':
+    api = CalendarAPI()
+    api.fetch_events(123)
