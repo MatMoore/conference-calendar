@@ -4,7 +4,7 @@ Load events from Calendar
 Calculate Removals, Additions
 Execute
 """
-from typing import NamedTuple, List
+from typing import NamedTuple, List, Set
 from datetime import date
 from csv import DictReader
 
@@ -22,17 +22,25 @@ class Event(NamedTuple):
     description: str
 
 
+class Plan(NamedTuple):
+    """
+    A planned set of changes to make against the calendar API
+    """
+    to_remove: Set[Event]
+    to_add: Set[Event]
+
+
 class MalformedCSV(Exception):
     """
     Raised if the input CSV is malformed.
     """
 
 
-def parse_events(csv_file) -> List[Event]:
+def parse_events(csv_file) -> Set[Event]:
     """
     Parse a CSV file and return a list of events
     """
-    results = []
+    results = set()
     csv_reader = DictReader(csv_file)
 
     if csv_reader.fieldnames != HEADER_NAMES:
@@ -54,6 +62,16 @@ def parse_events(csv_file) -> List[Event]:
             description=description
         )
 
-        results.append(event)
+        results.add(event)
 
     return results
+
+
+def plan_changes(old_events: Set[Event], new_events: Set[Event]) -> Plan:
+    """
+    Compare the old and new events and work out what changes to make
+    against the API
+    """
+    to_remove = old_events - new_events
+    to_add = new_events - old_events
+    return Plan(to_remove=to_remove, to_add=to_add)
