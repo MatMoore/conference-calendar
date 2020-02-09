@@ -62,39 +62,52 @@ def test_edit_event():
         description='test conference'
     )
 
-    old_events = set((
-        unchanged_event,
-        original_event,
-    ))
+    existing_events = {
+        unchanged_event: 1,
+        original_event: 2,
+    }
 
-    new_events = set((
+    desired_events = set((
         unchanged_event,
         changed_event
     ))
 
-    plan = plan_changes(old_events, new_events)
+    plan = plan_changes(
+        calendar_id=123,
+        existing_events=existing_events,
+        desired_events=desired_events
+    )
 
     assert plan.to_add == set((changed_event,))
-    assert plan.to_remove == set((original_event,))
+    assert plan.to_remove == set((2,))
 
 
 def test_nothing_to_change():
+    event1 = Event(
+        start_date=date(2020, 3, 1),
+        end_date=date(2020, 3, 2),
+        website='https://www.google.com',
+        description='test conference'
+    )
+    event2 = Event(
+        start_date=date(2020, 3, 2),
+        end_date=date(2020, 3, 4),
+        website='https://www.google.com',
+        description='another test conference'
+    )
     events = set((
-        Event(
-            start_date=date(2020, 3, 1),
-            end_date=date(2020, 3, 2),
-            website='https://www.google.com',
-            description='test conference'
-        ),
-        Event(
-            start_date=date(2020, 3, 2),
-            end_date=date(2020, 3, 4),
-            website='https://www.google.com',
-            description='another test conference'
-        )
+        event1,
+
     ))
 
-    plan = plan_changes(events, events)
+    plan = plan_changes(
+        calendar_id=123,
+        existing_events={
+            event1: 1,
+            event2: 2
+        },
+        desired_events=set((event1, event2))
+    )
 
     assert plan.to_add == set()
     assert plan.to_remove == set()
