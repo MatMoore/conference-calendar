@@ -4,7 +4,7 @@ Load events from Calendar
 Calculate Removals, Additions
 Execute
 """
-from typing import NamedTuple, Set, Dict
+from typing import NamedTuple, Set, Dict, Optional
 from datetime import date
 from csv import DictReader
 from httplib2 import Http
@@ -21,10 +21,12 @@ HEADER_NAMES = ['start_date', 'end_date', 'website', 'description']
 class Event(NamedTuple):
     """
     A calendar entry for a conference
+
+    TODO: add event title
     """
     start_date: date
     end_date: date
-    website: str
+    website: Optional[str]
     description: str
 
 
@@ -95,6 +97,7 @@ def plan_changes(calendar_id: int, existing_events: Dict[Event, int], desired_ev
 class CalendarAPI:
     SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
     CALENDAR_ID = os.environ['CALENDAR_ID']
+
     def __init__(self):
         client_secret_dict = ast.literal_eval(os.environ['CLIENT_SECRET_JSON'])
         credentials = ServiceAccountCredentials.from_json_keyfile_dict(
@@ -102,10 +105,30 @@ class CalendarAPI:
         http = credentials.authorize(Http())
         self.calendar = build('calendar', 'v3', http=http)
 
-    def fetch_events(self, calendar_id: int) -> Dict[Event, int]:
+    def _parse_event(self, event):
+        start_date = date.fromisoformat(event['start']['date'])
+        end_date = date.fromisoformat(event['end']['date'])
+
+        try:
+            website = event['extendedProperties']['shared']['website']
+        except KeyError:
+            website = None
+
+        description = event['description']
+
+        return Event(
+            start_date = start_date,
+            end_date = end_date,
+            website = website,
+            description = description
+        )
+
+    def fetch_events(self) -> Dict[Event, int]:
         """
         Fetch events from the remote calendar.
         Returns a dictionary where the key is the event details and the value is the event ID
+
+        See https://googleapis.github.io/google-api-python-client/docs/dyn/calendar_v3.events.html#list
         """
         now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
 
@@ -117,13 +140,18 @@ class CalendarAPI:
             orderBy='startTime'
         )
         events_result = request.execute()
-        events = events_result.get('items', [])
+        raw_events = events_result.get('items', [])
 
-        print(events)
+        events = {}
 
-        return {}
+        for raw_event in raw_events:
+            event_id = raw_event['id']
+            event = self._parse_event(raw_event)
+            events[event] = event_id
+
+        return events
 
 
 if __name__ == '__main__':
     api = CalendarAPI()
-    api.fetch_events(123)
+    api.fetch_events()
