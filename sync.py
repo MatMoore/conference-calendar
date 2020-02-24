@@ -111,7 +111,7 @@ class Planner:
 
 
 class CalendarAPI:
-    SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
+    SCOPES = ['https://www.googleapis.com/auth/calendar.events']
     CALENDAR_ID = os.environ['CALENDAR_ID']
 
     def __init__(self):
@@ -138,6 +138,40 @@ class CalendarAPI:
             website = website,
             description = description
         )
+
+    def remove(self, event_id):
+        """
+        Remove an event from the calendar
+        """
+        print(f'removing {event_id}')
+
+        request = self.calendar.events().delete(calendarId=self.CALENDAR_ID, eventId=event_id)
+        request.execute()
+
+    def add(self, event):
+        """
+        Add an event to the calendar
+        """
+        print(f'adding {event}')
+
+        body = {
+            'summary': 'TODO',
+            'start': {
+                'date': event.start_date.isoformat(),
+            },
+            'end': {
+                'date': event.end_date.isoformat(),
+            },
+            'description': event.description,
+            'extendedProperties': {
+                'shared': {
+                    'website': event.website,
+                },
+            },
+        }
+
+        request = self.calendar.events().insert(calendarId=self.CALENDAR_ID, body=body)
+        request.execute()
 
     def fetch_events(self) -> Dict[Event, int]:
         """
@@ -186,6 +220,14 @@ class Syncer:
             self.calendar_api.add(event)
 
 
-if __name__ == '__main__':
+def sync(filename):
     api = CalendarAPI()
-    api.fetch_events()
+    planner = Planner(api.CALENDAR_ID)
+
+    with open(filename) as csv_file:
+        parser = CsvParser(csv_file)
+        Syncer(api, parser, planner).sync()
+
+
+if __name__ == '__main__':
+    sync('data/2020.csv')
