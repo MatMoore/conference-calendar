@@ -168,6 +168,24 @@ class CalendarAPI:
         return events
 
 
+class Syncer:
+    def __init__(self, calendar_api, csv_parser, planner):
+        self.calendar_api = calendar_api
+        self.csv_parser = csv_parser
+        self.planner = planner
+
+    def sync(self):
+        existing_events = self.calendar_api.fetch_events()
+        desired_events = self.csv_parser.parse_events()
+        plan = self.planner.plan(existing_events, desired_events)
+
+        for event_id in plan.to_remove:
+            self.calendar_api.remove(event_id)
+
+        for event in plan.to_add:
+            self.calendar_api.add(event)
+
+
 if __name__ == '__main__':
     api = CalendarAPI()
     api.fetch_events()
