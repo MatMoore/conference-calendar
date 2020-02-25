@@ -1,7 +1,15 @@
 # Conference calendar
-A CSV dataset of software development conferences, published to a google calendar (WIP).
+A CSV dataset of software development conferences that can be imported into a calendar.
 
-## Setup
+## How to use
+- [View the calendar](https://calendar.google.com/calendar/embed?src=dtevk4lr2i35d9gri6v7lrijtc%40group.calendar.google.com&ctz=Europe%2FLondon)
+- [Download in iCal format](https://calendar.google.com/calendar/ical/dtevk4lr2i35d9gri6v7lrijtc%40group.calendar.google.com/public/basic.ics)
+
+## How to add events
+1. [Edit the CSV file](https://github.com/MatMoore/conference-calendar/edit/master/data/2020.csv)
+2. Commit the changes to a new branch and open a pull request
+
+## How to setup for local development or fork this project
 
 ### Create a service user in Google Cloud Platform
 
