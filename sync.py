@@ -15,7 +15,7 @@ from googleapiclient.discovery import build
 from oauth2client.service_account import ServiceAccountCredentials
 
 
-HEADER_NAMES = ['start_date', 'end_date', 'website', 'description']
+HEADER_NAMES = ['start_date', 'end_date', 'title', 'website', 'description']
 
 
 class Event(NamedTuple):
@@ -28,6 +28,7 @@ class Event(NamedTuple):
     end_date: date
     website: Optional[str]
     description: str
+    title: str
 
 
 class Plan(NamedTuple):
@@ -69,6 +70,7 @@ class CsvParser:
                 end_date = date.fromisoformat(row['end_date'])
                 website = row['website']
                 description = row['description']
+                title = row['title']
             except (KeyError, ValueError) as exc:
                 raise MalformedCSV from exc
 
@@ -76,7 +78,8 @@ class CsvParser:
                 start_date=start_date,
                 end_date=end_date,
                 website=website,
-                description=description
+                description=description,
+                title=title
             )
 
             results.add(event)
@@ -131,12 +134,14 @@ class CalendarAPI:
             website = None
 
         description = event['description']
+        title = event['summary']
 
         return Event(
             start_date = start_date,
             end_date = end_date,
             website = website,
-            description = description
+            description = description,
+            title = title
         )
 
     def remove(self, event_id):
@@ -155,7 +160,7 @@ class CalendarAPI:
         print(f'adding {event}')
 
         body = {
-            'summary': 'TODO',
+            'summary': event.title,
             'start': {
                 'date': event.start_date.isoformat(),
             },

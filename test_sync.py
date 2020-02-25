@@ -15,12 +15,14 @@ def test_parsing_valid_events():
 
     expected_events = set((
         Event(
+            title='expected1',
             start_date=date(2020, 3, 1),
             end_date=date(2020, 3, 2),
             website='https://www.google.com',
             description='test conference'
         ),
         Event(
+            title='expected2',
             start_date=date(2020, 3, 2),
             end_date=date(2020, 3, 4),
             website='https://www.google.com',
@@ -47,6 +49,7 @@ def test_malformed_csv(filename):
 
 def test_edit_event():
     original_event = Event(
+        title='original',
         start_date=date(2020, 3, 2),
         end_date=date(2020, 3, 4),
         website='https://www.google.com',
@@ -54,6 +57,7 @@ def test_edit_event():
     )
 
     changed_event = Event(
+        title='changed',
         start_date=date(2020, 3, 2),
         end_date=date(2020, 3, 4),
         website='https://www.google.com',
@@ -61,6 +65,7 @@ def test_edit_event():
     )
 
     unchanged_event = Event(
+        title='unchanged',
         start_date=date(2020, 3, 1),
         end_date=date(2020, 3, 2),
         website='https://www.google.com',
@@ -89,12 +94,14 @@ def test_edit_event():
 
 def test_nothing_to_change():
     event1 = Event(
+        title='event1',
         start_date=date(2020, 3, 1),
         end_date=date(2020, 3, 2),
         website='https://www.google.com',
         description='test conference'
     )
     event2 = Event(
+        title='event2',
         start_date=date(2020, 3, 2),
         end_date=date(2020, 3, 4),
         website='https://www.google.com',
@@ -120,6 +127,7 @@ def test_nothing_to_change():
 
 def test_syncer_obeys_the_plan():
     changed_event = Event(
+        title='changed',
         start_date=date(2020, 3, 2),
         end_date=date(2020, 3, 4),
         website='https://www.google.com',
