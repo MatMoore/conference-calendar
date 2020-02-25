@@ -1,5 +1,5 @@
-# Conference calendar
-A CSV dataset of UK software development conferences that can be imported into a calendar.
+# UK Software Engineering Events Calendar
+A CSV dataset of UK software engineering conferences that can be imported into a calendar.
 
 ## How to use
 - [View the calendar](https://calendar.google.com/calendar/embed?src=dtevk4lr2i35d9gri6v7lrijtc%40group.calendar.google.com&ctz=Europe%2FLondon)
