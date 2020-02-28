@@ -97,7 +97,7 @@ class CalendarAPI:
         now = datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
 
         request = self.calendar.events().list(
-            calendarId=self.CALENDAR_ID,
+            calendarId=self.calendar_id,
             timeMin=now,
             maxResults=10,
             singleEvents=True,

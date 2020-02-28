@@ -53,7 +53,7 @@ class Syncer:
 
 def sync(filename):
     api = CalendarAPI()
-    planner = Planner(api.CALENDAR_ID)
+    planner = Planner(api.calendar_id)
 
     with open(filename) as csv_file:
         parser = CsvParser(csv_file)
