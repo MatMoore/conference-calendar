@@ -20,7 +20,9 @@ def parse_event_body(event_response) -> Event:
     except KeyError:
         website = None
 
-    description = event_response['description']
+    raw_description = event_response['description']
+    description, _sep, _website = raw_description.rpartition('\n\n')
+
     title = event_response['summary']
 
     return Event(
@@ -44,7 +46,7 @@ def build_event_body(event: Event):
         'end': {
             'date': event.end_date.isoformat(),
         },
-        'description': event.description,
+        'description': event.description + '\n\n' + event.website,
         'extendedProperties': {
             'shared': {
                 'website': event.website,

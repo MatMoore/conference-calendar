@@ -16,7 +16,7 @@ def test_parse():
                 'website': 'https://google.com',
             }
         },
-        'description': 'foo',
+        'description': 'foo\n\nhttps://google.com',
         'summary': 'test',
     }
 
@@ -56,7 +56,7 @@ def test_build():
                 'website': 'https://google.com',
             }
         },
-        'description': 'foo',
+        'description': 'foo\n\nhttps://google.com',
         'summary': 'test',
     }
 
