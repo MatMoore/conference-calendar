@@ -1,4 +1,5 @@
 # UK Software Engineering Events Calendar
+![Tests](https://github.com/MatMoore/conference-calendar/workflows/Tests/badge.svg) ![Do the thing](https://github.com/MatMoore/conference-calendar/workflows/Do%20the%20thing/badge.svg)
 A CSV dataset of software engineering conferences that can be imported into a calendar.
 
 ## How to use
