@@ -1,5 +1,5 @@
 from typing import Dict
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from httplib2 import Http
 import ast
 import os
@@ -25,6 +25,9 @@ def parse_event_body(event_response) -> Event:
 
     title = event_response['summary']
 
+    if end_date != start_date:
+        end_date = end_date + timedelta(days=-1)
+
     return Event(
         start_date = start_date,
         end_date = end_date,
@@ -38,13 +41,18 @@ def build_event_body(event: Event):
     """
     Build the body of an event request
     """
+    if event.start_date == event.end_date:
+        end_date = event.end_date
+    else:
+        end_date = event.end_date + timedelta(days=1)
+
     return {
         'summary': event.title,
         'start': {
             'date': event.start_date.isoformat(),
         },
         'end': {
-            'date': event.end_date.isoformat(),
+            'date': end_date.isoformat(),
         },
         'description': event.description + '\n\n' + event.website,
         'extendedProperties': {
