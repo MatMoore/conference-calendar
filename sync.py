@@ -1,8 +1,5 @@
 """
-Load events from CSV
-Load events from Calendar
-Calculate Removals, Additions
-Execute
+Update a Google Calendar based on the CSV file
 """
 from typing import Set, Dict
 from models import Event, Plan
