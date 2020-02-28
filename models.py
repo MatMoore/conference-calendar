@@ -4,8 +4,6 @@ from datetime import date
 class Event(NamedTuple):
     """
     A calendar entry for a conference
-
-    TODO: add event title
     """
     start_date: date
     end_date: date
