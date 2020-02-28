@@ -12,6 +12,7 @@ def parse_event_body(event_response) -> Event:
     """
     Parse an event from google calendar
     """
+    raise Exception('test')
     start_date = date.fromisoformat(event_response['start']['date'])
     end_date = date.fromisoformat(event_response['end']['date'])
 
