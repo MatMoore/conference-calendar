@@ -1,14 +1,11 @@
-name: Tests
+name: Do the thing
 
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
 jobs:
-  build:
-
+  do_the_thing:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,6 +19,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install poetry
         poetry install
-    - name: Test with pytest
+    - name: Do the thing
       run: |
-        poetry run pytest
+        poetry run python sync.py
+      env:
+        CALENDAR_ID: ${{ secrets.CALENDAR_ID }}
+        CLIENT_SECRET_JSON: ${{ secrets.CLIENT_SECRET_JSON }}
