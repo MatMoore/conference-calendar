@@ -2,7 +2,7 @@ from datetime import date
 from models import Event
 
 
-def parse_event(event_response) -> Event:
+def parse_event_body(event_response) -> Event:
     """
     Parse an event from google calendar
     """
@@ -24,3 +24,24 @@ def parse_event(event_response) -> Event:
         description = description,
         title = title
     )
+
+
+def build_event_body(event: Event):
+    """
+    Build the body of an event request
+    """
+    return {
+        'summary': event.title,
+        'start': {
+            'date': event.start_date.isoformat(),
+        },
+        'end': {
+            'date': event.end_date.isoformat(),
+        },
+        'description': event.description,
+        'extendedProperties': {
+            'shared': {
+                'website': event.website,
+            },
+        },
+    }

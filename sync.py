@@ -14,7 +14,7 @@ import datetime
 from googleapiclient.discovery import build
 from oauth2client.service_account import ServiceAccountCredentials
 from models import Event, Plan
-from google_calendar import parse_event
+import google_calendar
 
 HEADER_NAMES = ['start_date', 'end_date', 'title', 'website', 'description']
 
@@ -118,21 +118,7 @@ class CalendarAPI:
         """
         print(f'adding {event}')
 
-        body = {
-            'summary': event.title,
-            'start': {
-                'date': event.start_date.isoformat(),
-            },
-            'end': {
-                'date': event.end_date.isoformat(),
-            },
-            'description': event.description,
-            'extendedProperties': {
-                'shared': {
-                    'website': event.website,
-                },
-            },
-        }
+        body = google_calendar.build_event_body(event)
 
         request = self.calendar.events().insert(calendarId=self.CALENDAR_ID, body=body)
         request.execute()
@@ -160,7 +146,7 @@ class CalendarAPI:
 
         for raw_event in raw_events:
             event_id = raw_event['id']
-            event = parse_event(raw_event)
+            event = google_calendar.parse_event_body(raw_event)
             events[event] = event_id
 
         return events
