@@ -16,7 +16,7 @@ def test_parse():
                 'website': 'https://google.com',
             }
         },
-        'description': 'foo\n\nhttps://google.com',
+        'description': 'foo\n\n<a href="https://google.com">https://google.com</a>',
         'summary': 'test',
     }
 
@@ -56,7 +56,7 @@ def test_build():
                 'website': 'https://google.com',
             }
         },
-        'description': 'foo\n\nhttps://google.com',
+        'description': 'foo\n\n<a href="https://google.com">https://google.com</a>',
         'summary': 'test',
     }
 
@@ -90,7 +90,7 @@ def test_build_multiday():
                 'website': 'https://google.com',
             }
         },
-        'description': 'foo\n\nhttps://google.com',
+        'description': 'foo\n\n<a href="https://google.com">https://google.com</a>',
         'summary': 'test',
     }
 
@@ -124,7 +124,7 @@ def test_build_multiday_on_month_boundary():
                 'website': 'https://google.com',
             }
         },
-        'description': 'the conference where we discuss dodgy datetime arithmetic\n\nhttps://google.com',
+        'description': 'the conference where we discuss dodgy datetime arithmetic\n\n<a href="https://google.com">https://google.com</a>',
         'summary': 'new years eve conf',
     }
 
@@ -144,7 +144,7 @@ def test_parse_multiday():
                 'website': 'https://google.com',
             }
         },
-        'description': 'foo\n\nhttps://google.com',
+        'description': 'foo\n\n<a href="https://google.com">https://google.com</a>',
         'summary': 'test',
     }
 
@@ -180,7 +180,7 @@ def test_parse_single_day_with_weird_end_date():
                 'website': 'https://google.com',
             }
         },
-        'description': 'foo\n\nhttps://google.com',
+        'description': 'foo\n\n<a href="https://google.com">https://google.com</a>',
         'summary': 'test',
     }
 

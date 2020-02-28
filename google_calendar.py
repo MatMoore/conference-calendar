@@ -54,7 +54,7 @@ def build_event_body(event: Event):
         'end': {
             'date': end_date.isoformat(),
         },
-        'description': event.description + '\n\n' + event.website,
+        'description': f'{event.description}\n\n<a href="{event.website}">{event.website}</a>',
         'extendedProperties': {
             'shared': {
                 'website': event.website,
