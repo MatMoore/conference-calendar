@@ -39,4 +39,4 @@ def test_parsing_valid_events():
 def test_malformed_csv(filename):
     with open(Path('test_data', filename)) as csv_file:
         with pytest.raises(MalformedCSV):
-            events = parse_events(csv_file)
+            parse_events(csv_file)

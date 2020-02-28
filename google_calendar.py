@@ -58,9 +58,9 @@ def build_event_body(event: Event):
 
 class CalendarAPI:
     SCOPES = ['https://www.googleapis.com/auth/calendar.events']
-    CALENDAR_ID = os.environ['CALENDAR_ID']
 
     def __init__(self):
+        self.calendar_id = os.environ['CALENDAR_ID']
         client_secret_dict = ast.literal_eval(os.environ['CLIENT_SECRET_JSON'])
         credentials = ServiceAccountCredentials.from_json_keyfile_dict(
             client_secret_dict, scopes=self.SCOPES)
@@ -73,7 +73,7 @@ class CalendarAPI:
         """
         print(f'removing {event_id}')
 
-        request = self.calendar.events().delete(calendarId=self.CALENDAR_ID, eventId=event_id)
+        request = self.calendar.events().delete(calendarId=self.calendar_id, eventId=event_id)
         request.execute()
 
     def add(self, event):
@@ -84,7 +84,7 @@ class CalendarAPI:
 
         body = build_event_body(event)
 
-        request = self.calendar.events().insert(calendarId=self.CALENDAR_ID, body=body)
+        request = self.calendar.events().insert(calendarId=self.calendar_id, body=body)
         request.execute()
 
     def fetch_events(self) -> Dict[Event, int]:
