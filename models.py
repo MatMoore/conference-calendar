@@ -16,6 +16,5 @@ class Plan(NamedTuple):
     """
     A planned set of changes to make against the calendar API
     """
-    calendar_id: int
     to_remove: Set[int]
     to_add: Set[Event]

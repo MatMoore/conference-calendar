@@ -43,7 +43,6 @@ def test_edit_event():
     ))
 
     plan = plan_changes(
-        calendar_id=123,
         existing_events=existing_events,
         desired_events=desired_events
     )
@@ -73,7 +72,6 @@ def test_nothing_to_change():
     ))
 
     plan = plan_changes(
-        calendar_id=123,
         existing_events={
             event1: 1,
             event2: 2
@@ -97,7 +95,6 @@ def test_syncer_obeys_the_plan():
     removed_event_id = 123
 
     plan = Plan(
-        calendar_id=1234,
         to_add=set((changed_event,)),
         to_remove=set((removed_event_id,))
     )

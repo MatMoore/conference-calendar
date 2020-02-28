@@ -7,18 +7,15 @@ from google_calendar import CalendarAPI
 from csv_calendar import CsvParser
 
 
-def plan_changes(calendar_id: int, existing_events: Dict[Event, int], desired_events: Set[Event]) -> Plan:
+def plan_changes(existing_events: Dict[Event, int], desired_events: Set[Event]) -> Plan:
     """
     Compare the old and new events and work out what changes to make
     against the API
     """
-    return Planner(calendar_id).plan(existing_events, desired_events)
+    return Planner().plan(existing_events, desired_events)
 
 
 class Planner:
-    def __init__(self, calendar_id):
-        self.calendar_id = calendar_id
-
     def plan(self, existing_events: Dict[Event, int], desired_events: Set[Event]) -> Plan:
         existing_event_set = set(existing_events.keys())
         events_to_remove = existing_event_set - desired_events
@@ -27,7 +24,6 @@ class Planner:
         ids_to_remove = {existing_events[event_id] for event_id in events_to_remove}
 
         return Plan(
-            calendar_id=self.calendar_id,
             to_remove=ids_to_remove,
             to_add=events_to_add
         )
@@ -53,7 +49,7 @@ class Syncer:
 
 def sync(filename):
     api = CalendarAPI()
-    planner = Planner(api.calendar_id)
+    planner = Planner()
 
     with open(filename) as csv_file:
         parser = CsvParser(csv_file)
