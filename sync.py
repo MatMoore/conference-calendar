@@ -13,31 +13,9 @@ import os
 import datetime
 from googleapiclient.discovery import build
 from oauth2client.service_account import ServiceAccountCredentials
-
+from models import Event, Plan
 
 HEADER_NAMES = ['start_date', 'end_date', 'title', 'website', 'description']
-
-
-class Event(NamedTuple):
-    """
-    A calendar entry for a conference
-
-    TODO: add event title
-    """
-    start_date: date
-    end_date: date
-    website: Optional[str]
-    description: str
-    title: str
-
-
-class Plan(NamedTuple):
-    """
-    A planned set of changes to make against the calendar API
-    """
-    calendar_id: int
-    to_remove: Set[int]
-    to_add: Set[Event]
 
 
 class MalformedCSV(Exception):
