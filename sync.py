@@ -14,6 +14,7 @@ import datetime
 from googleapiclient.discovery import build
 from oauth2client.service_account import ServiceAccountCredentials
 from models import Event, Plan
+from google_calendar import parse_event
 
 HEADER_NAMES = ['start_date', 'end_date', 'title', 'website', 'description']
 
@@ -102,26 +103,6 @@ class CalendarAPI:
         http = credentials.authorize(Http())
         self.calendar = build('calendar', 'v3', http=http)
 
-    def _parse_event(self, event):
-        start_date = date.fromisoformat(event['start']['date'])
-        end_date = date.fromisoformat(event['end']['date'])
-
-        try:
-            website = event['extendedProperties']['shared']['website']
-        except KeyError:
-            website = None
-
-        description = event['description']
-        title = event['summary']
-
-        return Event(
-            start_date = start_date,
-            end_date = end_date,
-            website = website,
-            description = description,
-            title = title
-        )
-
     def remove(self, event_id):
         """
         Remove an event from the calendar
@@ -179,7 +160,7 @@ class CalendarAPI:
 
         for raw_event in raw_events:
             event_id = raw_event['id']
-            event = self._parse_event(raw_event)
+            event = parse_event(raw_event)
             events[event] = event_id
 
         return events
