@@ -21,7 +21,7 @@ class Planner:
         events_to_remove = existing_event_set - desired_events
         events_to_add = desired_events - existing_event_set
 
-        ids_to_remove = {existing_events[event_id] for event_id in events_to_remove}
+        ids_to_remove = {existing_events[event] for event in events_to_remove}
 
         return Plan(
             to_remove=ids_to_remove,
