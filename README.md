@@ -1,7 +1,7 @@
 # UK Software Engineering Events Calendar
 ![Tests](https://github.com/MatMoore/conference-calendar/workflows/Tests/badge.svg) ![Do the thing](https://github.com/MatMoore/conference-calendar/workflows/Do%20the%20thing/badge.svg)
 
-A CSV dataset of software engineering conferences that can be imported into a calendar.
+A CSV dataset of software engineering conferences that can be imported into a calendar. Online conferences can also be added as long as a significant part of it takes between 9:00-17:00 UTC.
 
 ## How to use
 - [View the calendar](https://calendar.google.com/calendar/embed?src=dtevk4lr2i35d9gri6v7lrijtc%40group.calendar.google.com&ctz=Europe%2FLondon)
