@@ -8,7 +8,7 @@ license = "MIT"
 [tool.poetry.dependencies]
 python = "^3.8"
 google-api-python-client = "^1.8.0"
-google-auth-httplib2 = "^0.0.3"
+google-auth-httplib2 = "^0.0.4"
 google-auth-oauthlib = "^0.4.1"
 oauth2client = "^4.1.3"
 
