@@ -1,0 +1,24 @@
+version: 2
+updates:
+- package-ecosystem: pip
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: google-auth-oauthlib
+    versions:
+    - 0.4.2
+    - 0.4.3
+  - dependency-name: pytest
+    versions:
+    - 6.2.2
+  - dependency-name: mypy
+    versions:
+    - "0.800"
+  - dependency-name: google-api-python-client
+    versions:
+    - 1.12.8
+  - dependency-name: google-auth-httplib2
+    versions:
+    - 0.0.4
